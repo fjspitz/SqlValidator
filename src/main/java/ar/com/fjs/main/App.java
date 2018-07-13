@@ -25,7 +25,9 @@ public class App {
 		String databaseName = "PROF";
 		
 		for (String file : args) {
-			String objectName = removePrefix(FilenameUtils.removeExtension(file));
+			System.out.println("Procesando: " + file);
+			String objectName = normalizeFilename(file);
+			//System.out.println(objectName);
 			String statements = app.leer(file);
 			
 			Paquete paquete = cargarPaqueteDeReglas(statements, databaseName, objectName);			
@@ -33,6 +35,10 @@ public class App {
 			System.out.println("Resultado del proceso para " + file + ": " + resultado);
 			System.out.println();
 		}
+	}
+	
+	private static String normalizeFilename(String filename) {
+		return removePrefix(FilenameUtils.removeExtension(filename));
 	}
 	
 	private static String removePrefix(String filename) {
@@ -44,7 +50,7 @@ public class App {
 	}
 	
 	/**
-	 * Lee un archivo en memoria.
+	 * Carga el contenido de un archivo en memoria.
 	 * 
 	 * @param fileName
 	 * @return
@@ -61,6 +67,14 @@ public class App {
 		}
 		return result;
 	}
+	
+	/**
+	 * Procesa un archivo aplicando el paquete de reglas que le haya sido definido.
+	 * 
+	 * @param statements
+	 * @param paquete
+	 * @return
+	 */
 	
 	private boolean process(String statements, Paquete paquete) {
 		boolean resultadoFinal = true;
@@ -82,9 +96,10 @@ public class App {
 		System.out.println(paquete.getNombre());
 	}
 	
+	// TODO: esto debería ser cargado a partir de un archivo de configuración (properties, xml, etc).
 	private static Paquete cargarPaqueteDeReglas(String statements, String databaseName, String objectName) {
 		
-		Validacion validarLongitudDeNombre = new ValidarLongitudNombreObjeto(statements, databaseName, objectName);
+		Validacion validarLongitudDeNombre = new ValidarLongitudNombreObjeto(objectName);
 		Regla r1 = new Regla(1, "ValidarLongitudDeNombre", "Se valida que el nombre del objeto no supere el máximo permitido", validarLongitudDeNombre);
 		
 		Validacion validarUsoDeClausulaUse = new ValidarUsoDeClausula(statements, "use", databaseName);
@@ -99,12 +114,16 @@ public class App {
 		Validacion usoDeClausulaGrant = new ValidarUsoDeClausula(statements, "GRANT EXECUTE ON", objectName);
 		Regla r5 = new Regla(5, "ValidarClausulaGrantExecute", "Debe existir el granteo con los permisos de ejecución para el objeto", usoDeClausulaGrant);
 		
+		Validacion usoDeClausulaDrop = new ValidarUsoDeClausula(statements, "drop procedure", objectName);
+		Regla r6 = new Regla(6, "ValidarUsoClausulaDrop", "Debe ejecutarse el drop procedure siempre", usoDeClausulaDrop);
+		
 		Paquete paquete = new Paquete();
 		paquete.agregarRegla(r1);
 		paquete.agregarRegla(r2);
 		paquete.agregarRegla(r3);
 		paquete.agregarRegla(r4);
 		paquete.agregarRegla(r5);
+		paquete.agregarRegla(r6);
 		
 		return paquete;
 	}

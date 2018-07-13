@@ -16,16 +16,29 @@ public class ValidarUsoDeClausula implements Validacion {
 	}
 
 	public boolean validar() {
-		calcularPosicion();
+		boolean result = false;
 		//System.out.println("Buscando: " + clausula.toLowerCase() + " " + target.toLowerCase());
-		boolean result = sql.toLowerCase().indexOf(clausula.toLowerCase() + " " + target.toLowerCase()) > -1;
+		
+		if (sql.toLowerCase().indexOf(clausula.toLowerCase() + " " + target.toLowerCase()) > -1) {
+			result = sql.toLowerCase().indexOf(clausula.toLowerCase() + " " + target.toLowerCase()) > -1;			
+		} else if (sql.toLowerCase().indexOf(clausula.toLowerCase() + " " + "dbo.".concat(target.toLowerCase())) > -1) {
+			//System.out.println("Buscando alternativa 1: " + clausula.toLowerCase() + " " + "dbo.".concat(target.toLowerCase()));
+			result = sql.toLowerCase().indexOf(clausula.toLowerCase() + " " + "dbo.".concat(target.toLowerCase())) > -1;
+		} else if (sql.toLowerCase().indexOf(clausula.toLowerCase() + " " + "'dbo.".concat(target.toLowerCase() + "'")) > -1) {
+			//System.out.println("Buscando alternativa 2: " + clausula.toLowerCase() + " " + "'dbo.".concat(target.toLowerCase() + "'"));
+			result = sql.toLowerCase().indexOf(clausula.toLowerCase() + " " + "'dbo.".concat(target.toLowerCase() + "'")) > -1;
+		}
+		
 		if (!result) {
 			setMensajeError("No se encontró la cláusula " + clausula + " " + target);
+		} else {
+			calcularPosicion();			
 		}
 		return result;
 	}
 	
 	private void calcularPosicion() {
+		
 		this.posicion = sql.toLowerCase().indexOf(clausula.toLowerCase() + " " + target.toLowerCase());
 	}
 	

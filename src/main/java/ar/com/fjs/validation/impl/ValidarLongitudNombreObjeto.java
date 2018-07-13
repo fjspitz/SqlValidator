@@ -3,14 +3,9 @@ package ar.com.fjs.validation.impl;
 import ar.com.fjs.validation.Validacion;
 
 public class ValidarLongitudNombreObjeto implements Validacion {
-	private String clausula; 
-	private String sql;
 	private String target;
 	
-	public ValidarLongitudNombreObjeto(String clausula, String sql, String target) {
-		super();
-		this.clausula = clausula;
-		this.sql = sql;
+	public ValidarLongitudNombreObjeto(String target) {
 		this.target = target;
 	}
 	
