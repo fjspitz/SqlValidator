@@ -1,6 +1,7 @@
 # SqlValidator
 
 ![Quality Gate](https://sonarcloud.io/api/project_badges/measure?project=fjspitz_SqlValidator&metric=alert_status)
+[![CII Best Practices](https://bestpractices.coreinfrastructure.org/projects/2276/badge)](https://bestpractices.coreinfrastructure.org/projects/2276)
 
 ##### v1.0
 
