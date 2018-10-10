@@ -1,8 +1,6 @@
 # SqlValidator
 
-https://sonarcloud.io/api/project_badges/quality_gate?project=fjspitz_SqlValidator
-
-[![Quality Gate](https://sonarcloud.io/api/project_badges/quality_gate?project=fjspitz_SqlValidator)](https://sonarcloud.io/dashboard?id=fjspitz_SqlValidator)
+[![Quality Gate](https://sonarcloud.io/api/project_badges/measure?project=fjspitz_SqlValidator&metric=alert_status)]
 
 ##### v1.0
 
