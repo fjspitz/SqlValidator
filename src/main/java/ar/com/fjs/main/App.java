@@ -4,6 +4,8 @@ import java.io.IOException;
 
 import org.apache.commons.io.FilenameUtils;
 import org.apache.commons.io.IOUtils;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 
 import ar.com.fjs.model.Paquete;
 import ar.com.fjs.model.Regla;
@@ -14,10 +16,11 @@ import ar.com.fjs.validation.impl.ValidarUsoDeClausula;
 /**
  * Objetivo: parsear un archivo SQL encontrando ciertas cláusulas y en cierto orden para darlo por válido.
  * 
- * Darlo por válido implica implementarlo en el ambiente correspondiente de manera automática.
+ * Darlo por válido implica que puede ser implementado en el ambiente correspondiente de manera automática.
  *
  */
 public class App {
+	private static final Logger LOGGER = LoggerFactory.getLogger(App.class);
 	
 	public static void main(String...args) {
 		App app = new App();
@@ -25,15 +28,13 @@ public class App {
 		String databaseName = "PROF";
 		
 		for (String file : args) {
-			System.out.println("Procesando: " + file);
+			LOGGER.info(String.format("Procesando: %s", file));
 			String objectName = normalizeFilename(file);
-			//System.out.println(objectName);
 			String statements = app.leer(file);
 			
 			Paquete paquete = cargarPaqueteDeReglas(statements, databaseName, objectName);			
 			boolean resultado = app.process(statements, paquete);
-			System.out.println("Resultado del proceso para " + file + ": " + resultado);
-			System.out.println();
+			LOGGER.info(String.format("Resultado del proceso para %s: %s", file, resultado));
 		}
 	}
 	
@@ -43,7 +44,7 @@ public class App {
 	
 	private static String removePrefix(String filename) {
 		if (filename.toLowerCase().startsWith("dbo.")) {
-			return filename.substring(filename.toLowerCase().indexOf("dbo.")+4);
+			return filename.substring(filename.toLowerCase().indexOf("dbo.") + 4);
 		} else {
 			return filename;
 		}
@@ -63,7 +64,7 @@ public class App {
 		try {
 		    result = IOUtils.toString(classLoader.getResourceAsStream(fileName), "utf-8");
 		} catch (IOException e) {
-			e.printStackTrace();
+			LOGGER.error(String.format("Error al leer el archivo: %s", fileName));
 		}
 		return result;
 	}
@@ -81,7 +82,7 @@ public class App {
 		
 		for (Regla regla : paquete.getReglas()) {
 			regla.setEstado(regla.getValidacion().validar());
-			System.out.println(regla);
+			LOGGER.info(regla.toString());
 			if (!regla.getEstado()) {
 				resultadoFinal = false;
 			}
@@ -93,7 +94,7 @@ public class App {
 	@SuppressWarnings("unused")
 	private void printResult(Paquete paquete) {
 		// DO stuff
-		System.out.println(paquete.getNombre());
+		LOGGER.info(paquete.getNombre());
 	}
 	
 	// TODO: esto debería ser cargado a partir de un archivo de configuración (properties, xml, etc).
