@@ -8,7 +8,7 @@ public class Paquete {
 	private List<Regla> reglas;
 	
 	public Paquete() {
-		reglas = new ArrayList<Regla>();
+		reglas = new ArrayList<>();
 	}
 
 	public Paquete(String nombre, List<Regla> reglas) {
