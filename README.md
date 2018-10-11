@@ -2,6 +2,9 @@
 
 ![Quality Gate](https://sonarcloud.io/api/project_badges/measure?project=fjspitz_SqlValidator&metric=alert_status)
 [![CII Best Practices](https://bestpractices.coreinfrastructure.org/projects/2276/badge)](https://bestpractices.coreinfrastructure.org/projects/2276)
+![Technical Debt](https://sonarcloud.io/api/project_badges/measure?project=fjspitz_SqlValidator&metric=sqale_index)
+![Coverage](https://sonarcloud.io/api/project_badges/measure?project=fjspitz_SqlValidator&metric=coverage)
+![Lines of code](https://sonarcloud.io/api/project_badges/measure?project=fjspitz_SqlValidator&metric=ncloc)
 
 ##### v1.0
 
@@ -27,4 +30,9 @@ Otra validación de ejemplo:
 
 Se requiere que el nombre del archivo de script se corresponda con el objeto a crear/modificar y responsa a un patrón determinado. Por ejemplo, si el script refiere al stored procedure llamado **sp_ActualizacionDeIndiceDePrecios**, entonces el script debe llamarse *DDL_sp_ActualizacionDeIndiceDePrecios.sql*.
 
+### Premisas
 
+Cada elemento u objeto de base de datos que es creado, lo es a partir de un archivo de script que puede ejecutarse en el DBMS.
+
+
+ 

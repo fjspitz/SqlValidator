@@ -1,14 +1,14 @@
 package ar.com.fjs.main;
 
-import java.io.IOException;
+import java.io.File;
 
-import org.apache.commons.io.FilenameUtils;
-import org.apache.commons.io.IOUtils;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
+import ar.com.fjs.model.DatabaseElement;
 import ar.com.fjs.model.Paquete;
 import ar.com.fjs.model.Regla;
+import ar.com.fjs.service.FileService;
 import ar.com.fjs.validation.Validacion;
 import ar.com.fjs.validation.impl.ValidarLongitudNombreObjeto;
 import ar.com.fjs.validation.impl.ValidarUsoDeClausula;
@@ -22,52 +22,39 @@ import ar.com.fjs.validation.impl.ValidarUsoDeClausula;
 public class App {
 	private static final Logger LOGGER = LoggerFactory.getLogger(App.class);
 	
-	public static void main(String...args) {
+	private final FileService service = new FileService();
+	
+	public static void main(String...args) throws Exception {
 		App app = new App();
 		
-		String databaseName = "PROF";
+		if (args.length == 0)
+			throw new IllegalArgumentException("No se han pasado los argumentos correctos. Finalizado.");
 		
-		for (String file : args) {
-			LOGGER.info(String.format("Procesando: %s", file));
-			String objectName = normalizeFilename(file);
-			String statements = app.leer(file);
+		app.initialize(args);
+	}
+	
+	public void initialize(String... files) {
+		
+		for (String file : files) {
+			LOGGER.info("Procesando: {}", file);
 			
-			Paquete paquete = cargarPaqueteDeReglas(statements, databaseName, objectName);			
-			boolean resultado = app.process(statements, paquete);
-			LOGGER.info(String.format("Resultado del proceso para %s: %s", file, resultado));
-		}
+			File f = new File(file);
+			
+			if (f.exists()) {
+				DatabaseElement element = service.parseFile(file);
+				LOGGER.info("Objeto: {}", element);
+				LOGGER.info("**************************************************************************************************************");
+			} else {
+				LOGGER.warn("El archivo {} no existe.", file);
+			}
+			
+			//Paquete paquete = cargarPaqueteDeReglas(statements, databaseName, objectName);
+			//boolean resultado = app.process(statements, paquete);
+			//LOGGER.info("Resultado del proceso para {}: {}", file, resultado);
+		}		
 	}
 	
-	private static String normalizeFilename(String filename) {
-		return removePrefix(FilenameUtils.removeExtension(filename));
-	}
 	
-	private static String removePrefix(String filename) {
-		if (filename.toLowerCase().startsWith("dbo.")) {
-			return filename.substring(filename.toLowerCase().indexOf("dbo.") + 4);
-		} else {
-			return filename;
-		}
-	}
-	
-	/**
-	 * Carga el contenido de un archivo en memoria.
-	 * 
-	 * @param fileName
-	 * @return
-	 */
-	
-	public String leer(String fileName) {
-		String result = "";
-		
-		ClassLoader classLoader = getClass().getClassLoader();
-		try {
-		    result = IOUtils.toString(classLoader.getResourceAsStream(fileName), "utf-8");
-		} catch (IOException e) {
-			LOGGER.error(String.format("Error al leer el archivo: %s", fileName));
-		}
-		return result;
-	}
 	
 	/**
 	 * Procesa un archivo aplicando el paquete de reglas que le haya sido definido.
@@ -76,13 +63,17 @@ public class App {
 	 * @param paquete
 	 * @return
 	 */
-	
+	@SuppressWarnings("unused")
 	private boolean process(String statements, Paquete paquete) {
 		boolean resultadoFinal = true;
-		
+
 		for (Regla regla : paquete.getReglas()) {
 			regla.setEstado(regla.getValidacion().validar());
-			LOGGER.info(regla.toString());
+			
+			String reglaForLogging = regla.toString(); 
+			
+			LOGGER.info(reglaForLogging);
+			
 			if (!regla.getEstado()) {
 				resultadoFinal = false;
 			}
@@ -91,13 +82,8 @@ public class App {
 		return resultadoFinal;
 	}
 	
-	@SuppressWarnings("unused")
-	private void printResult(Paquete paquete) {
-		// DO stuff
-		LOGGER.info(paquete.getNombre());
-	}
-	
 	// TODO: esto debería ser cargado a partir de un archivo de configuración (properties, xml, etc).
+	@SuppressWarnings("unused")
 	private static Paquete cargarPaqueteDeReglas(String statements, String databaseName, String objectName) {
 		
 		Validacion validarLongitudDeNombre = new ValidarLongitudNombreObjeto(objectName);

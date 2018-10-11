@@ -1,4 +1,4 @@
-package ar.com.fjs.SqlValidator;
+package ar.com.fjs.main;
 
 import junit.framework.Test;
 import junit.framework.TestCase;

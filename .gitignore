@@ -92,8 +92,17 @@ hs_err_pid*
 ## ignoring target file
 target/
 
-#Custom
+# Custom
 # Maven dependency-reduced-pom file
 dependency-reduced-pom.xml
+
+# Text files, PlantUML files
+*.txt
+*.plant
+*.draft
+*.odt
+
+db/
+
 
 # End of https://www.gitignore.io/api/java,eclipse,java-web,code-java
