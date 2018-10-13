@@ -6,7 +6,7 @@
 ![Coverage](https://sonarcloud.io/api/project_badges/measure?project=fjspitz_SqlValidator&metric=coverage)
 ![Lines of code](https://sonarcloud.io/api/project_badges/measure?project=fjspitz_SqlValidator&metric=ncloc)
 
-##### v1.0
+##### v1.1 Beta
 
 ##### lunes, 06. agosto 2018 06:24 
 
@@ -34,5 +34,3 @@ Se requiere que el nombre del archivo de script se corresponda con el objeto a c
 
 Cada elemento u objeto de base de datos que es creado, lo es a partir de un archivo de script que puede ejecutarse en el DBMS.
 
-
- 
