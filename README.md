@@ -5,6 +5,7 @@
 ![Technical Debt](https://sonarcloud.io/api/project_badges/measure?project=fjspitz_SqlValidator&metric=sqale_index)
 ![Coverage](https://sonarcloud.io/api/project_badges/measure?project=fjspitz_SqlValidator&metric=coverage)
 ![Lines of code](https://sonarcloud.io/api/project_badges/measure?project=fjspitz_SqlValidator&metric=ncloc)
+[![Build Status](https://travis-ci.org/fjspitz/SqlValidator.svg?branch=develop)](https://travis-ci.org/fjspitz/SqlValidator)
 
 ##### v1.1 Beta
 
