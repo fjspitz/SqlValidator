@@ -3,7 +3,7 @@
 ![Quality Gate](https://sonarcloud.io/api/project_badges/measure?project=fjspitz_SqlValidator&metric=alert_status)
 [![CII Best Practices](https://bestpractices.coreinfrastructure.org/projects/2276/badge)](https://bestpractices.coreinfrastructure.org/projects/2276)
 ![Technical Debt](https://sonarcloud.io/api/project_badges/measure?project=fjspitz_SqlValidator&metric=sqale_index)
-![Coverage](https://sonarcloud.io/api/project_badges/measure?project=fjspitz_SqlValidator&metric=coverage)
+[![Coverage Status](https://coveralls.io/repos/github/fjspitz/SqlValidator/badge.svg?branch=master)](https://coveralls.io/github/fjspitz/SqlValidator?branch=master)
 ![Lines of code](https://sonarcloud.io/api/project_badges/measure?project=fjspitz_SqlValidator&metric=ncloc)
 [![Build Status](https://travis-ci.org/fjspitz/SqlValidator.svg?branch=develop)](https://travis-ci.org/fjspitz/SqlValidator)
 
